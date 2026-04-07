@@ -3,18 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر MAR OMAR</title>
+    <title>متجر MAR OMAR - ماركيت شباب الأزهر</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* Basic Page Styling */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px; }
+        /* --- BRAND-NEW BACKGROUND STYLING --- */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            
+            /* Modern Islamic/Azharite Background */
+            /* 1. Base color is very light grey-blue */
+            background-color: #f0f4f8; 
+            
+            /* 2. Light repeating geometric pattern */
+            background-image: url('https://www.transparenttextures.com/patterns/az-subtle.png'); 
+            
+            /* 3. Ensures the pattern covers the whole screen */
+            background-attachment: fixed;
+            background-size: initial;
+            background-position: top center;
+            background-repeat: repeat;
+        }
+        /* --- END OF BACKGROUND STYLING --- */
+
         header { display: flex; justify-content: space-between; align-items: center; background: #212529; color: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; }
         .cart-toggle-btn { background: #ffc107; color: #212529; border: none; padding: 10px 15px; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 16px; }
         
         /* Products Grid */
         #mainGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        
+        /* Added a border to make the card defined on the pattern */
+        .card { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-align: center; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+            border: 1px solid #e0e0e0; /* Defines the card boundary */
+        }
+        
         .card img { max-width: 100%; height: 150px; object-fit: contain; margin-bottom: 15px; }
         .card h4 { margin: 0 0 10px 0; font-size: 18px; color: #333; }
         .card .price { font-weight: bold; color: #28a745; font-size: 18px; margin-bottom: 15px; }
