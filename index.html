@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAR OMAR - SUPERMARKET</title>
+    <title>Alazhar City Delivery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -21,7 +21,6 @@
             padding-bottom: 50px;
         }
 
-        /* Top Header */
         header { 
             display: flex; 
             justify-content: space-between; 
@@ -43,10 +42,8 @@
             font-weight: bold; 
             cursor: pointer; 
             border-radius: 30px; 
-            transition: 0.3s;
         }
 
-        /* Category Bar */
         .category-bar {
             display: flex;
             justify-content: center;
@@ -59,21 +56,17 @@
 
         .cat-btn {
             background: #eee;
-            border: 2px solid transparent;
             padding: 8px 20px;
             border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
-            white-space: nowrap;
         }
 
         .cat-btn.active {
             background: var(--main-red);
             color: white;
-            border-color: var(--main-black);
         }
 
-        /* Grid */
         #mainGrid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
@@ -87,165 +80,151 @@
             border-radius: 12px; 
             text-align: center; 
             border-bottom: 5px solid var(--main-black);
-            transition: transform 0.2s;
         }
-        .card:hover { transform: translateY(-5px); border-bottom-color: var(--main-red); }
-        
+
         .card img { max-width: 100%; height: 140px; object-fit: contain; }
-        .card h4 { margin: 10px 0; color: var(--main-black); min-height: 45px; }
-        .card .price { font-weight: bold; color: var(--main-red); font-size: 20px; margin-bottom: 15px; }
+
+        .price { color: var(--main-red); font-weight: bold; }
 
         .btn-add { 
             background: var(--main-black); 
             color: white; 
             border: none; 
-            padding: 12px; 
-            width: 100%; 
-            cursor: pointer; 
-            border-radius: 8px; 
-            font-weight: bold;
+            padding: 10px; 
+            width: 100%;
+            cursor: pointer;
         }
-        .btn-add:hover { background: var(--main-red); }
 
-        /* Sidebar Cart */
-        #cartPanel { position: fixed; right: -350px; top: 0; width: 320px; height: 100%; background: #fff; transition: 0.3s; padding: 20px; z-index: 1000; box-shadow: -5px 0 15px rgba(0,0,0,0.3); }
+        #cartPanel { 
+            position: fixed; 
+            right: -350px; 
+            top: 0; 
+            width: 320px; 
+            height: 100%; 
+            background: #fff; 
+            transition: 0.3s; 
+            padding: 20px;
+        }
+
         #cartPanel.active { right: 0; }
-        .btn-checkout { background: var(--main-red); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; }
 
-        /* Receipt Overlay */
-        #receiptOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 2000; color: white; }
-        .receipt-box { background: white; color: black; padding: 30px; border-radius: 15px; width: 320px; border-top: 10px solid var(--main-red); }
+        .btn-checkout { 
+            background: var(--main-red); 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            width: 100%;
+        }
+
+        #receiptOverlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.9); 
+            justify-content: center; 
+            align-items: center;
+        }
+
+        .receipt-box { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px;
+        }
     </style>
 </head>
+
 <body>
 
-    <header>
-        <h2 style="margin:0; letter-spacing: 1px;">MAR <span style="color:var(--main-red)">OMAR</span></h2>
-        <button class="cart-toggle-btn" onclick="toggleCart()">
-            <i class="fas fa-shopping-basket"></i> <span id="cartBtnText">السلة (0)</span>
-        </button>
-    </header>
+<header>
+    <h2>ALAZHAR <span style="color:#e63946;">CITY DELIVERY</span></h2>
+    <button class="cart-toggle-btn" onclick="toggleCart()">
+        🛒 <span id="cartBtnText">السلة (0)</span>
+    </button>
+</header>
 
-    <div class="category-bar">
-        <div class="cat-btn active" onclick="filterCat('all', this)">الكل</div>
-        <div class="cat-btn" onclick="filterCat('snacks', this)">سناكس</div>
-        <div class="cat-btn" onclick="filterCat('drinks', this)">مشروبات</div>
-        <div class="cat-btn" onclick="filterCat('dairy', this)">ألبان</div>
+<div class="category-bar">
+    <div class="cat-btn active" onclick="filterCat('all', this)">الكل</div>
+    <div class="cat-btn" onclick="filterCat('snacks', this)">سناكس</div>
+    <div class="cat-btn" onclick="filterCat('drinks', this)">مشروبات</div>
+    <div class="cat-btn" onclick="filterCat('dairy', this)">ألبان</div>
+</div>
+
+<div id="mainGrid"></div>
+
+<div id="cartPanel">
+    <h3>سلة التسوق</h3>
+    <div id="cartItems"></div>
+    <h4>الإجمالي: <span id="finalTotal">0</span> ج.م</h4>
+    <input type="text" id="clientName" placeholder="الاسم">
+    <input type="text" id="clientLocation" placeholder="العنوان">
+    <button class="btn-checkout" onclick="processOrder()">تأكيد الطلب</button>
+</div>
+
+<div id="receiptOverlay">
+    <div class="receipt-box">
+        <h2>طلب جديد</h2>
+        <div id="rItems"></div>
+        <h3 id="rTotal"></h3>
     </div>
+</div>
 
-    <div id="mainGrid"></div>
+<script>
+const myNum = "201277423376";
 
-    <div id="cartPanel">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3>سلة التسوق</h3>
-            <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer; font-size:20px;"></i>
-        </div>
-        <div id="cartItems"></div>
-        <hr>
-        <h4>الإجمالي: <span id="finalTotal">0</span> ج.م</h4>
-        <input type="text" id="clientName" placeholder="الاسم بالكامل">
-        <input type="text" id="clientLocation" placeholder="العنوان بالتفصيل">
-        <button class="btn-checkout" onclick="processOrder()">تأكيد الطلب (WhatsApp)</button>
-    </div>
+const products = [
+    { id: 1, name: 'شيبسي', price: 20, cat: 'snacks', img: 'https://via.placeholder.com/150' },
+    { id: 2, name: 'بيبسي', price: 15, cat: 'drinks', img: 'https://via.placeholder.com/150' },
+    { id: 3, name: 'جبنة', price: 35, cat: 'dairy', img: 'https://via.placeholder.com/150' }
+];
 
-    <div id="receiptOverlay">
-        <div class="receipt-box">
-            <h2 style="text-align:center">طلب جديد ✅</h2>
-            <div id="rItems"></div>
-            <hr>
-            <h3 style="text-align:center">الإجمالي: <span id="rTotal"></span></h3>
-            <button onclick="closeReceipt()" style="width:100%; padding:10px; background:#333; color:white; border:none; border-radius:5px;">إغلاق</button>
-        </div>
-    </div>
+let cart = [];
 
-    <script>
-        const myNum = "201277423376"; 
+function renderProducts(filter = 'all') {
+    const grid = document.getElementById('mainGrid');
+    grid.innerHTML = "";
 
-        const products = [
-            { id: 1, name: 'شيبسي تايجر عائلي', price: 20, cat: 'snacks', img: 'https://m.media-amazon.com/images/I/41-qXlO-KFL._AC_.jpg' },
-            { id: 2, name: 'بيبسي كانز 330 مل', price: 15, cat: 'drinks', img: 'https://m.media-amazon.com/images/I/51p4i7tE3rL._AC_SL1000_.jpg' },
-            { id: 3, name: 'جبنة عبور لاند 250جم', price: 35, cat: 'dairy', img: 'https://m.media-amazon.com/images/I/61M3W2vE2GL._AC_SL1500_.jpg' },
-            { id: 4, name: 'لبن جهينة 1 لتر', price: 45, cat: 'dairy', img: 'https://m.media-amazon.com/images/I/51r-FvG8G9L._AC_SL1000_.jpg' }
-        ];
+    const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
 
-        let cart = [];
+    filtered.forEach(p => {
+        grid.innerHTML += `
+            <div class="card">
+                <img src="${p.img}">
+                <h4>${p.name}</h4>
+                <div class="price">${p.price} ج.م</div>
+                <button class="btn-add" onclick="addToCart(${p.id})">أضف</button>
+            </div>
+        `;
+    });
+}
 
-        function renderProducts(filter = 'all') {
-            const grid = document.getElementById('mainGrid');
-            grid.innerHTML = "";
-            
-            const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
+function addToCart(id) {
+    cart.push(products.find(x => x.id === id));
+    updateCart();
+}
 
-            filtered.forEach(p => {
-                grid.innerHTML += `
-                    <div class="card">
-                        <img src="${p.img}">
-                        <h4>${p.name}</h4>
-                        <div class="price">${p.price} ج.م</div>
-                        <button class="btn-add" onclick="addToCart(${p.id})">أضف للسلة</button>
-                    </div>
-                `;
-            });
-        }
+function updateCart() {
+    document.getElementById('cartBtnText').innerText = `السلة (${cart.length})`;
+    let total = cart.reduce((s, i) => s + i.price, 0);
+    document.getElementById('finalTotal').innerText = total;
+}
 
-        function filterCat(cat, btn) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderProducts(cat);
-        }
+function toggleCart() {
+    document.getElementById('cartPanel').classList.toggle('active');
+}
 
-        function addToCart(id) {
-            cart.push(products.find(x => x.id === id));
-            updateCart();
-        }
+function processOrder() {
+    let name = document.getElementById('clientName').value;
+    let loc = document.getElementById('clientLocation').value;
 
-        function updateCart() {
-            document.getElementById('cartBtnText').innerText = `السلة (${cart.length})`;
-            let sub = cart.reduce((s, i) => s + i.price, 0);
-            let total = sub > 0 ? (sub + 10) : 0;
-            document.getElementById('finalTotal').innerText = total;
+    let msg = `طلب من Alazhar City Delivery\nالاسم: ${name}\nالعنوان: ${loc}`;
+    window.open(`https://wa.me/${myNum}?text=${encodeURIComponent(msg)}`);
+}
 
-            document.getElementById('cartItems').innerHTML = cart.map((i, idx) => `
-                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
-                    <span>${i.name}</span>
-                    <i class="fas fa-trash" style="color:#e63946; cursor:pointer;" onclick="removeItem(${idx})"></i>
-                </div>
-            `).join('');
-        }
+renderProducts();
+</script>
 
-        function removeItem(idx) {
-            cart.splice(idx, 1);
-            updateCart();
-        }
-
-        function toggleCart() {
-            document.getElementById('cartPanel').classList.toggle('active');
-        }
-
-        function processOrder() {
-            const name = document.getElementById('clientName').value;
-            const loc = document.getElementById('clientLocation').value;
-            if (!cart.length || !loc || !name) { alert("من فضلك ادخل الاسم والعنوان!"); return; }
-
-            let total = document.getElementById('finalTotal').innerText;
-            document.getElementById('rTotal').innerText = total + " ج.م";
-            document.getElementById('rItems').innerHTML = cart.map(i => `<div>- ${i.name}</div>`).join('');
-            document.getElementById('receiptOverlay').style.display = 'flex';
-
-            let msg = `📦 *طلب جديد من MAR OMAR*%0A%0A👤 *العميل:* ${name}%0A📍 *الموقع:* ${loc}%0A%0A🛒 *الطلبات:*%0A`;
-            cart.forEach(i => msg += `- ${i.name}%0A`);
-            msg += `%0A💰 *الإجمالي:* ${total} ج.م`;
-            window.open(`https://wa.me/${myNum}?text=${msg}`);
-        }
-
-        function closeReceipt() {
-            document.getElementById('receiptOverlay').style.display = 'none';
-            cart = [];
-            updateCart();
-            toggleCart();
-        }
-
-        renderProducts();
-    </script>
 </body>
 </html>
