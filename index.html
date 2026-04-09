@@ -16,14 +16,15 @@
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; 
-            /* خلفية تعبر عن التوصيل والسرعة */
-            background-color: #f0f0f0;
-            background-image: linear-gradient(rgba(240, 240, 240, 0.9), rgba(240, 240, 240, 0.9)), 
-                              url('https://github.com/AMH012-hu/MarMarket/blob/main/Gemini_Generated_Image_dnjw3kdnjw3kdnjw(1).png');
+            /* الخلفية الجديدة الاحترافية */
+            background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), 
+                              url('https://raw.githubusercontent.com/AMH012-hu/MarMarket/main/Gemini_Generated_Image_czcedmczcedmczce.jpg'); 
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
             padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* --- الهيدر المتجاوب --- */
         header { 
             display: flex; 
             justify-content: space-between; 
@@ -37,15 +38,11 @@
             z-index: 1000;
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .logo-container { display: flex; align-items: center; gap: 10px; }
 
         .logo {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             object-fit: contain;
             border-radius: 50%;
             background: white;
@@ -58,11 +55,7 @@
             50% { transform: translateY(-5px); }
         }
 
-        header h2 {
-            margin: 0;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
+        header h2 { margin: 0; font-size: 0.9rem; white-space: nowrap; }
 
         .cart-toggle-btn { 
             background: var(--main-red); 
@@ -78,7 +71,6 @@
             gap: 5px;
         }
 
-        /* --- شريط التصنيفات --- */
         .category-bar {
             display: flex;
             gap: 8px;
@@ -100,7 +92,6 @@
         }
         .cat-btn.active { background: var(--main-red); color: white; }
 
-        /* --- شبكة المنتجات للموبايل --- */
         #mainGrid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
@@ -117,13 +108,7 @@
             border: 1px solid #eee;
         }
 
-        .card img { 
-            width: 100%; 
-            height: 90px; 
-            object-fit: contain; 
-            margin-bottom: 5px;
-        }
-
+        .card img { width: 100%; height: 90px; object-fit: contain; margin-bottom: 5px; }
         .card h4 { font-size: 0.8rem; margin: 5px 0; height: 2.5em; overflow: hidden; }
         .price { color: var(--main-red); font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; }
 
@@ -138,7 +123,6 @@
             font-weight: bold;
         }
 
-        /* --- سلة المشتريات --- */
         #cartPanel { 
             position: fixed; 
             right: -100%; 
@@ -170,7 +154,10 @@
 
 <header>
     <div class="logo-container">
-        <img <img src="https://amh012-hu.github.io/MarMarket/5958747406847380999(1).jpg" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/50?text=DELIVERY'">
+        <img src="https://amh012-hu.github.io/MarMarket/5958747406847380999(1).jpg" 
+             alt="Logo" 
+             class="logo" 
+             onerror="this.src='https://via.placeholder.com/50?text=DELIVERY'">
         <h2>ALAZHAR <span style="color:var(--main-red);">CITY</span></h2>
     </div>
     <button class="cart-toggle-btn" onclick="toggleCart()">
@@ -245,7 +232,7 @@ function updateCart() {
     document.getElementById('cartBtnText').innerText = `(${cart.length})`;
     let total = cart.reduce((s, i) => s + i.price, 0);
     document.getElementById('finalTotal').innerText = total;
-    document.getElementById('cartItems').innerHTML = cart.map(i => `<p style="font-size:0.8rem;">${i.name} - ${i.price} ج.م</p>`).join('');
+    document.getElementById('cartItems').innerHTML = cart.map(i => `<p style="font-size:0.8rem; margin:5px 0;">- ${i.name} (${i.price}ج.م)</p>`).join('');
 }
 
 function toggleCart() {
