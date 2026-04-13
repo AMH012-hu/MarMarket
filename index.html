@@ -15,9 +15,7 @@
 
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            background-color: var(--bg-light);
-            padding-bottom: 70px;
+            margin: 0; background-color: var(--bg-light); padding-bottom: 70px;
         }
 
         header { 
@@ -43,24 +41,34 @@
         .price { color: var(--main-red); font-weight: bold; margin-bottom: 8px; }
         .btn-add { background: var(--main-black); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
+        /* Floating Special Basket Button */
+        .special-btn {
+            position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px;
+            background: var(--main-black); color: white; border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            cursor: pointer; z-index: 3000; border: 2px solid var(--main-red);
+        }
+        .special-btn span { font-size: 0.6rem; font-weight: bold; margin-top: 2px; }
+
+        /* Generic Sidebar/Panel Style */
+        .panel { position: fixed; bottom: -100%; left: 0; width: 100%; height: 50%; background: #fff; transition: 0.4s; padding: 20px; z-index: 4000; box-shadow: 0 -5px 15px rgba(0,0,0,0.2); border-radius: 20px 20px 0 0; box-sizing: border-box; }
+        .panel.active { bottom: 0; }
+        
         #cartPanel { position: fixed; right: -100%; top: 0; width: 85%; max-width: 320px; height: 100%; background: #fff; transition: 0.3s; padding: 20px; z-index: 2000; box-shadow: -5px 0 15px rgba(0,0,0,0.1); overflow-y: auto; }
         #cartPanel.active { right: 0; }
-        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
-        .back-btn { background: none; border: none; color: var(--main-red); font-size: 0.9rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; }
-        .cart-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; }
-        .cart-overlay.active { display: block; }
 
-        .private-basket { background: #fff4f4; border: 1px solid var(--main-red); border-radius: 10px; padding: 10px; margin: 15px 0; }
-        .private-basket label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; color: var(--main-red); }
-        .private-basket textarea { width: 100%; border: none; background: transparent; font-family: inherit; resize: none; font-size: 0.9rem; outline: none; box-sizing: border-box; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+        .back-btn { background: none; border: none; color: var(--main-red); font-size: 0.9rem; font-weight: bold; cursor: pointer; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; }
+        .overlay.active { display: block; }
+
+        textarea { width: 100%; border: 1px solid #ddd; border-radius: 10px; padding: 10px; font-family: inherit; resize: none; box-sizing: border-box; font-size: 1rem; margin-top: 10px; }
 
         .bill-details { background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 10px; border: 1px dashed #ccc; }
         .bill-row { display: flex; justify-content: space-between; margin: 5px 0; font-size: 0.85rem; }
         .total-row { border-top: 1px solid #ddd; padding-top: 8px; margin-top: 8px; font-weight: bold; color: var(--main-red); font-size: 1rem; }
-        
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-
-        .help-btn { position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px; background: var(--main-black); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 3000; border: 2px solid var(--main-red); }
     </style>
 </head>
 <body>
@@ -83,35 +91,35 @@
 </div>
 
 <div id="mainGrid"></div>
-<div class="help-btn" onclick="showHelp()">؟</div>
-<div class="cart-overlay" id="overlay" onclick="toggleCart()"></div>
+
+<div class="special-btn" onclick="toggleSpecial()">
+    <i class="fas fa-shopping-bag"></i>
+    <span>طلب خاص</span>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<div id="specialPanel" class="panel">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="margin:0; color:var(--main-red);">سلة الطلبات الخاصة</h3>
+        <button onclick="toggleSpecial()" style="border:none; background:none; font-size:1.5rem;">&times;</button>
+    </div>
+    <p style="font-size:0.8rem; color:#666;">اكتب هنا أي منتجات تريدها وغير موجودة في القائمة:</p>
+    <textarea id="specialRequestText" rows="5" placeholder="مثال: 2 كيلو سكر، عيش فينو، أو اسم منتج معين..."></textarea>
+    <button onclick="toggleSpecial()" style="width:100%; background:var(--main-black); color:white; border:none; padding:12px; border-radius:10px; margin-top:10px; font-weight:bold;">حفظ وإضافة للطلب</button>
+</div>
 
 <div id="cartPanel">
     <div class="cart-header">
         <button class="back-btn" onclick="toggleCart()"><i class="fas fa-arrow-right"></i> رجوع</button>
         <h3 style="margin: 0;">سلة الطلبات</h3>
     </div>
-    
     <div id="cartItems"></div>
-
-    <div class="private-basket">
-        <label><i class="fas fa-pen"></i> طلبات خاصة (منتجات غير موجودة):</label>
-        <textarea id="specialRequest" rows="3" placeholder="اكتب هنا أي شيء آخر تحتاجه..."></textarea>
-    </div>
     
     <div class="bill-details">
-        <div class="bill-row">
-            <span>ثمن المنتجات:</span>
-            <span><span id="itemsTotal">0</span> ج.م</span>
-        </div>
-        <div class="bill-row">
-            <span>خدمة التوصيل:</span>
-            <span>10 ج.م</span>
-        </div>
-        <div class="bill-row total-row">
-            <span>الإجمالي النهائي:</span>
-            <span><span id="finalTotal">0</span> ج.م</span>
-        </div>
+        <div class="bill-row"><span>ثمن المنتجات:</span><span><span id="itemsTotal">0</span> ج.م</span></div>
+        <div class="bill-row"><span>خدمة التوصيل:</span><span>10 ج.م</span></div>
+        <div class="bill-row total-row"><span>الإجمالي النهائي:</span><span><span id="finalTotal">0</span> ج.م</span></div>
     </div>
 
     <input type="text" id="clientName" placeholder="الاسم الكامل">
@@ -154,7 +162,6 @@ function addToCart(id) {
 function updateCart() {
     let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
     document.getElementById('itemsTotal').innerText = subtotal;
-    // Calculation includes 10 EGP delivery fee if cart isn't empty
     document.getElementById('finalTotal').innerText = subtotal > 0 ? subtotal + 10 : 0;
     document.getElementById('cartItems').innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee; font-size:0.8rem;"><span>${i.name}</span><span>${i.price} ج.م</span></div>`).join('');
 }
@@ -164,14 +171,21 @@ function toggleCart() {
     document.getElementById('overlay').classList.toggle('active');
 }
 
-function showHelp() {
-    alert("كيفية الطلب:\n1. اختر المنتجات.\n2. إذا أردت شيئاً غير موجود، اكتبه في 'طلبات خاصة' داخل السلة.\n3. راجع التكلفة (المنتجات + 10 ج.م توصيل).\n4. ادخل بياناتك وارسل واتساب.");
+function toggleSpecial() {
+    document.getElementById('specialPanel').classList.toggle('active');
+    document.getElementById('overlay').classList.toggle('active');
+}
+
+function closeAll() {
+    document.getElementById('cartPanel').classList.remove('active');
+    document.getElementById('specialPanel').classList.remove('active');
+    document.getElementById('overlay').classList.remove('active');
 }
 
 function processOrder() {
     let name = document.getElementById('clientName').value;
     let loc = document.getElementById('clientLocation').value;
-    let special = document.getElementById('specialRequest').value;
+    let special = document.getElementById('specialRequestText').value;
     if(!name || !loc || (cart.length === 0 && !special)) { alert("برجاء إدخال البيانات والطلبات"); return; }
     
     let itemsList = cart.map(i => `- ${i.name}`).join('%0A');
@@ -181,7 +195,7 @@ function processOrder() {
     let msg = `*طلب جديد*%0A👤 العميل: ${name}%0A📍 العنوان: ${loc}%0A%0A`;
     if(cart.length > 0) msg += `🛒 *المنتجات:*%0A${itemsList}%0A%0A`;
     if(special) msg += `📝 *طلبات خاصة:*%0A${special}%0A%0A`;
-    msg += `--------------------------%0A💰 *ثمن المنتجات:* ${subtotal} ج.م%0A🛵 *التوصيل:* 10 ج.م%0A✅ *الإجمالي:* ${total} ج.م`;
+    msg += `--------------------------%0A💰 *ثمن المنتجات:* ${subtotal} ج.م%0A🛵 *التوصيل:* 10 ج.م%0A✅ *الإجمالي التقريبي:* ${total} ج.م`;
     
     window.open(`https://wa.me/${myNum}?text=${msg}`);
 }
