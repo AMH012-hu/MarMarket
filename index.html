@@ -10,13 +10,12 @@
         :root { --main-red: #e63946; --main-black: #1a1a1a; --bg-light: #f4f4f7; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg-light); padding-bottom: 80px; }
         
-        /* HEADER & LOGO ANIMATION */
         header { display: flex; justify-content: space-between; align-items: center; background: var(--main-black); color: white; padding: 10px 4%; border-bottom: 3px solid var(--main-red); position: sticky; top: 0; z-index: 1000; }
         
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); }
-            50% { transform: scale(1.05); box-shadow: 0 0 10px 5px rgba(230, 57, 70, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); box-shadow: 0 0 10px var(--main-red); }
+            100% { transform: scale(1); }
         }
 
         .logo { 
@@ -25,16 +24,9 @@
             animation: pulse 2s infinite ease-in-out; 
         }
 
-        /* BUTTON STYLES (Matching the ? and Private Basket) */
         .btn-add { 
-            background: var(--main-black); 
-            color: white; 
-            border: 2px solid var(--main-red); 
-            padding: 10px; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            cursor: pointer;
-            transition: 0.3s;
+            background: var(--main-black); color: white; border: 2px solid var(--main-red); 
+            padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;
         }
         .btn-add:active { transform: scale(0.95); background: var(--main-red); }
 
@@ -45,16 +37,14 @@
         .cat-btn.active { background: var(--main-red); color: white; }
 
         #mainGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; }
-        .card { background: #ffffff; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; justify-content: space-between; height: 240px; }
-        .card img { width: 100%; height: 80px; object-fit: contain; }
+        .card { background: #ffffff; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; justify-content: space-between; height: 260px; }
+        .card img { width: 100%; height: 100px; object-fit: contain; border-radius: 8px; }
         .price { color: var(--main-red); font-weight: bold; margin-bottom: 8px; }
 
-        /* FLOATING ACTION BUTTONS */
         .float-btn { position: fixed; bottom: 20px; width: 60px; height: 60px; background: var(--main-black); color: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 3000; border: 2px solid var(--main-red); }
         .help-btn { right: 20px; font-size: 24px; }
         .special-btn { left: 20px; font-size: 20px; }
 
-        /* PANELS */
         .panel { position: fixed; bottom: -100%; left: 0; width: 100%; height: 50%; background: #fff; transition: 0.4s; padding: 20px; z-index: 4000; border-radius: 20px 20px 0 0; box-sizing: border-box; }
         .panel.active { bottom: 0; }
         #cartPanel { position: fixed; right: -100%; top: 0; width: 85%; max-width: 320px; height: 100%; background: #fff; transition: 0.3s; padding: 20px; z-index: 2000; box-shadow: -5px 0 15px rgba(0,0,0,0.1); overflow-y: auto; }
@@ -67,7 +57,7 @@
         .bill-row { display: flex; justify-content: space-between; margin: 5px 0; font-size: 0.85rem; }
         .total-row { border-top: 1px solid #ddd; padding-top: 8px; margin-top: 8px; font-weight: bold; color: var(--main-red); }
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-        .special-item-line { color: #555; font-style: italic; border-right: 3px solid var(--main-red); padding-right: 8px; margin: 5px 0; font-size: 0.8rem; background: #fff5f5; }
+        .special-item-line { color: #555; font-style: italic; border-right: 3px solid var(--main-red); padding-right: 8px; margin: 10px 0; font-size: 0.8rem; background: #fff5f5; }
     </style>
 </head>
 <body>
@@ -94,7 +84,7 @@
 <div class="float-btn help-btn" onclick="showHelp()">؟</div>
 <div class="float-btn special-btn" onclick="toggleSpecial()">
     <i class="fas fa-pen-fancy"></i>
-    <span style="font-size: 0.6rem; font-weight: bold;">طلب خاص</span>
+    <span style="font-size: 0.5rem; font-weight: bold;">طلب خاص</span>
 </div>
 
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
@@ -105,7 +95,7 @@
         <button onclick="toggleSpecial()" style="border:none; background:none; font-size:1.5rem;">&times;</button>
     </div>
     <textarea id="specialRequestText" rows="4" placeholder="اكتب هنا ما تريد وسنتصل بك لتحديد السعر..."></textarea>
-    <button onclick="saveSpecialToCart()" style="width:100%; background:var(--main-black); color:white; border:2px solid var(--main-red); padding:12px; border-radius:10px; margin-top:10px; font-weight:bold;">نقل للسلة العادية</button>
+    <button onclick="saveSpecialToCart()" style="width:100%; background:var(--main-black); color:white; border:2px solid var(--main-red); padding:12px; border-radius:10px; margin-top:10px; font-weight:bold;">حفظ للسلة</button>
 </div>
 
 <div id="cartPanel">
@@ -113,27 +103,46 @@
         <button onclick="toggleCart()" style="background:none; border:none; color:var(--main-red); font-weight:bold;"><i class="fas fa-arrow-right"></i> رجوع</button>
         <h3 style="margin: 0;">سلة الطلبات</h3>
     </div>
-    
     <div id="cartItemsList" style="margin-top:15px;"></div>
-    
     <div class="bill-details">
         <div class="bill-row"><span>ثمن المنتجات:</span><span><span id="itemsTotal">0</span> ج.م</span></div>
         <div class="bill-row"><span>توصيل:</span><span>10 ج.م</span></div>
         <div class="bill-row total-row"><span>الإجمالي:</span><span><span id="finalTotal">0</span> ج.م</span></div>
     </div>
-
-    <input type="text" id="clientName" placeholder="الاسم الكامل">
+    <input type="text" id="clientName" placeholder="الاسم بالكامل">
     <input type="text" id="clientLocation" placeholder="العنوان بالتفصيل">
     <button onclick="processOrder()" style="width:100%; background:var(--main-red); color:white; border:none; padding:15px; border-radius:12px; font-weight:bold; margin-top:15px; cursor:pointer;">إرسال الطلب واتساب</button>
 </div>
 
 <script>
 const myNum = "201277423376";
+
+// All your GitHub URLs added here. You can change names and prices below.
 const products = [
-    { id: 1, name: 'مكرونه اسباجيتى الملكه', price: 20, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-01-46.png' },
-    { id: 2, name: 'Vcola ليمون', price: 15, cat: 'drinks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-14-45.png' },
-    { id: 3, name: 'جبنة عبور لاند 250جم', price: 35, cat: 'dairy', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/Screenshot%20from%202026-04-13%2012-39-14.png' },
-    { id: 4, name: 'لبن جهينة 1 لتر', price: 45, cat: 'dairy', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-58-37.png' }
+    { id: 1, name: 'منتج 1', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-01-46.png' },
+    { id: 2, name: 'منتج 2', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-02-28.png' },
+    { id: 3, name: 'منتج 3', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-02-35.png' },
+    { id: 4, name: 'منتج 4', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-02-39.png' },
+    { id: 5, name: 'منتج 5', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-02-44.png' },
+    { id: 6, name: 'منتج 6', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-02-48.png' },
+    { id: 7, name: 'منتج 7', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-04-04.png' },
+    { id: 8, name: 'منتج 8', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-04-21.png' },
+    { id: 9, name: 'منتج 9', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-04-23.png' },
+    { id: 10, name: 'منتج 10', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-05-29.png' },
+    { id: 11, name: 'منتج 11', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-12-06.png' },
+    { id: 12, name: 'منتج 12', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-14-33.png' },
+    { id: 13, name: 'منتج 13', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-14-37.png' },
+    { id: 14, name: 'منتج 14', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-14-40.png' },
+    { id: 15, name: 'منتج 15', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-14-45.png' },
+    { id: 16, name: 'منتج 16', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-17-09.png' },
+    { id: 17, name: 'منتج 17', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-17-37.png' },
+    { id: 18, name: 'منتج 18', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-57-38.png' },
+    { id: 19, name: 'منتج 19', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-57-41.png' },
+    { id: 20, name: 'منتج 20', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-57-44.png' },
+    { id: 21, name: 'منتج 21', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-57-46.png' },
+    { id: 22, name: 'منتج 22', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-58-35.png' },
+    { id: 23, name: 'منتج 23', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-58-37.png' },
+    { id: 24, name: 'منتج 24', price: 0, cat: 'all', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-58-39.png' }
 ];
 
 let cart = [];
@@ -144,7 +153,7 @@ function renderProducts(filter = 'all') {
     grid.innerHTML = "";
     const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
     filtered.forEach(p => {
-        grid.innerHTML += `<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/80'"><h4>${p.name}</h4><div><div class="price">${p.price} ج.م</div><button class="btn-add" onclick="addToCart(${p.id})">أضف للسلة</button></div></div>`;
+        grid.innerHTML += `<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/100'"><h4>${p.name}</h4><div><div class="price">${p.price} ج.م</div><button class="btn-add" onclick="addToCart(${p.id})">أضف للسلة</button></div></div>`;
     });
 }
 
@@ -182,7 +191,7 @@ function closeAll() { document.getElementById('cartPanel').classList.remove('act
 function filterCat(cat, btn) { document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); renderProducts(cat); }
 
 function showHelp() {
-    alert("كيف تطلب؟\n1. اختر المنتجات التي تريدها.\n2. طلبات خاصة؟ استخدم الزر بالأسفل.\n3. راجع السلة وارسل واتساب.");
+    alert("كيف تطلب؟\n1. اختر المنتجات.\n2. طلبات خاصة؟ استخدم الزر بالأسفل.\n3. راجع السلة وارسل واتساب.");
 }
 
 function processOrder() {
