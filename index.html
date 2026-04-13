@@ -24,14 +24,12 @@
             animation: pulse 2s infinite ease-in-out; 
         }
 
-        /* Basket Notification Badge */
-        .cart-container { position: relative; }
-        .cart-toggle-btn { background: var(--main-red); color: white; border: none; padding: 8px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; }
-        
-        .special-notify {
+        /* --- NEW NOTIFICATION STYLES --- */
+        .cart-wrapper { position: relative; }
+        .special-badge {
             position: absolute;
-            top: -10px;
-            right: -5px;
+            top: -8px;
+            right: -8px;
             background: white;
             color: var(--main-red);
             font-size: 0.65rem;
@@ -39,18 +37,29 @@
             border-radius: 10px;
             border: 2px solid var(--main-red);
             font-weight: bold;
-            display: none; /* Hidden until special order is saved */
+            display: none; /* Hidden by default */
+            z-index: 10;
             animation: bounce 0.5s infinite alternate;
         }
-
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+        /* ------------------------------- */
 
-        .btn-add { background: var(--main-black); color: white; border: 2px solid var(--main-red); padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-add { 
+            background: var(--main-black); color: white; border: 2px solid var(--main-red); 
+            padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
         .btn-add:active { transform: scale(0.95); background: var(--main-red); }
+
+        .cart-toggle-btn { background: var(--main-red); color: white; border: none; padding: 8px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+
+        .category-bar { display: flex; gap: 8px; padding: 12px 10px; background: rgba(255, 255, 255, 0.9); overflow-x: auto; border-bottom: 1px solid #ddd; position: sticky; top: 68px; z-index: 999; }
+        .cat-btn { background: #eee; padding: 6px 18px; border-radius: 15px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; cursor: pointer; border: none; }
+        .cat-btn.active { background: var(--main-red); color: white; }
 
         #mainGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; }
         .card { background: #ffffff; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; justify-content: space-between; height: 260px; }
-        .card img { width: 100%; height: 100px; object-fit: contain; }
+        .card img { width: 100%; height: 100px; object-fit: contain; border-radius: 8px; }
+        .price { color: var(--main-red); font-weight: bold; margin-bottom: 8px; }
 
         .float-btn { position: fixed; bottom: 20px; width: 60px; height: 60px; background: var(--main-black); color: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 3000; border: 2px solid var(--main-red); }
         .help-btn { right: 20px; font-size: 24px; }
@@ -62,8 +71,12 @@
         #cartPanel.active { right: 0; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; }
         .overlay.active { display: block; }
-        
+
         textarea { width: 100%; border: 1px solid #ddd; border-radius: 10px; padding: 10px; font-family: inherit; resize: none; box-sizing: border-box; margin-top: 10px; background: #fff9f9; }
+        .bill-details { background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 10px; border: 1px dashed #ccc; }
+        .bill-row { display: flex; justify-content: space-between; margin: 5px 0; font-size: 0.85rem; }
+        .total-row { border-top: 1px solid #ddd; padding-top: 8px; margin-top: 8px; font-weight: bold; color: var(--main-red); }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
         .special-item-line { color: #555; font-style: italic; border-right: 3px solid var(--main-red); padding-right: 8px; margin: 10px 0; font-size: 0.8rem; background: #fff5f5; }
     </style>
 </head>
@@ -74,16 +87,24 @@
         <img src="https://raw.githubusercontent.com/amh012-hu/MarMarket/main/5958747406847380999(1).jpg" alt="Logo" class="logo">
         <h2>ALAZHAR <span style="color:var(--main-red);">CITY</span></h2>
     </div>
-    <div class="cart-container">
-        <div id="specialBadge" class="special-notify">خاص</div>
+    <div class="cart-wrapper">
+        <div id="notifyBadge" class="special-badge">خاص</div>
         <button class="cart-toggle-btn" onclick="toggleCart()">
             <i class="fas fa-shopping-basket"></i> <span id="cartBtnText">(0)</span>
         </button>
     </div>
 </header>
 
+<div class="category-bar">
+    <button class="cat-btn active" onclick="filterCat('all', this)">الكل</button>
+    <button class="cat-btn" onclick="filterCat('snacks', this)">سناكس</button>
+    <button class="cat-btn" onclick="filterCat('drinks', this)">مشروبات</button>
+    <button class="cat-btn" onclick="filterCat('dairy', this)">ألبان</button>
+</div>
+
 <div id="mainGrid"></div>
 
+<div class="float-btn help-btn" onclick="showHelp()">؟</div>
 <div class="float-btn special-btn" onclick="toggleSpecial()">
     <i class="fas fa-pen-fancy"></i>
     <span style="font-size: 0.5rem; font-weight: bold;">طلب خاص</span>
@@ -96,7 +117,7 @@
         <h3 style="margin:0; color:var(--main-red);">سلة الطلبات الخاصة</h3>
         <button onclick="toggleSpecial()" style="border:none; background:none; font-size:1.5rem;">&times;</button>
     </div>
-    <textarea id="specialRequestText" rows="4" placeholder="اكتب هنا طلبك الخاص..."></textarea>
+    <textarea id="specialRequestText" rows="4" placeholder="اكتب هنا ما تريد وسنتصل بك لتحديد السعر..."></textarea>
     <button onclick="saveSpecialToCart()" style="width:100%; background:var(--main-black); color:white; border:2px solid var(--main-red); padding:12px; border-radius:10px; margin-top:10px; font-weight:bold;">حفظ للسلة</button>
 </div>
 
@@ -106,16 +127,58 @@
         <h3 style="margin: 0;">سلة الطلبات</h3>
     </div>
     <div id="cartItemsList" style="margin-top:15px;"></div>
+    <div class="bill-details">
+        <div class="bill-row"><span>ثمن المنتجات:</span><span><span id="itemsTotal">0</span> ج.م</span></div>
+        <div class="bill-row"><span>توصيل:</span><span>10 ج.م</span></div>
+        <div class="bill-row total-row"><span>الإجمالي:</span><span><span id="finalTotal">0</span> ج.م</span></div>
     </div>
+    <input type="text" id="clientName" placeholder="الاسم بالكامل">
+    <input type="text" id="clientLocation" placeholder="العنوان بالتفصيل">
+    <button onclick="processOrder()" style="width:100%; background:var(--main-red); color:white; border:none; padding:15px; border-radius:12px; font-weight:bold; margin-top:15px; cursor:pointer;">إرسال الطلب واتساب</button>
+</div>
 
 <script>
+const myNum = "201277423376";
+
+// Exact names and prices based on your images
 const products = [
-    { id: 1, name: 'مكرونة الملكة اسباجيتي', price: 22, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-01-46.png' },
-    // ... add all other 23 products here
+    { id: 1, name: 'مكرونة الملكة اسباجيتي - 400 جرام', price: 22, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-01-46.png' },
+    { id: 2, name: 'مكرونة الملكة خواتم - 400 جرام', price: 22, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-02-28.png' },
+    { id: 3, name: 'مكرونة الملكة قلم - 400 جرام', price: 22, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-02-35.png' },
+    { id: 4, name: 'مكرونة الملكة مرمرية - 400 جرام', price: 22, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-02-39.png' },
+    { id: 5, name: 'مكرونة الملكة هلالية - 400 جرام', price: 22, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-02-44.png' },
+    { id: 6, name: 'مكرونة الملكة لسان عصفور - 400 جرام', price: 22, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-02-48.png' },
+    { id: 7, name: 'شيبسي عائلي - طماطم', price: 15, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-04-04.png' },
+    { id: 8, name: 'شيبسي - ملح وخـل', price: 10, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-04-21.png' },
+    { id: 9, name: 'شيبسي - شطة وليمون', price: 10, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-04-23.png' },
+    { id: 10, name: 'كرانشي - جبنة متبلة', price: 10, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-05-29.png' },
+    { id: 11, name: 'بسكويت أوريو - 6 قطع', price: 7, cat: 'snacks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-12-06.png' },
+    { id: 12, name: 'في كولا - كولا كلاسيك', price: 15, cat: 'drinks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-14-33.png' },
+    { id: 13, name: 'في كولا - تفاح أخضر', price: 15, cat: 'drinks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-14-37.png' },
+    { id: 14, name: 'في كولا - أناناس', price: 15, cat: 'drinks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-14-40.png' },
+    { id: 15, name: 'في كولا - ليمون صودا', price: 15, cat: 'drinks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-14-45.png' },
+    { id: 16, name: 'عصير بيتي - برتقال', price: 12, cat: 'drinks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-17-09.png' },
+    { id: 17, name: 'عصير بيتي - مانجو', price: 12, cat: 'drinks', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-10%2011-17-37.png' },
+    { id: 18, name: 'جبنة عبور لاند - فيتا', price: 38, cat: 'dairy', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-57-38.png' },
+    { id: 19, name: 'جبنة عبور لاند - شيدر', price: 38, cat: 'dairy', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-57-41.png' },
+    { id: 20, name: 'جبنة عبور لاند - رومي', price: 38, cat: 'dairy', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-57-44.png' },
+    { id: 21, name: 'جبنة عبور لاند - اسطنبولي', price: 38, cat: 'dairy', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-57-46.png' },
+    { id: 22, name: 'لبن جهينة - كامل الدسم', price: 42, cat: 'dairy', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-58-35.png' },
+    { id: 23, name: 'لبن جهينة - خالي الدسم', price: 42, cat: 'dairy', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-58-37.png' },
+    { id: 24, name: 'لبن جهينة - نصف دسم', price: 42, cat: 'dairy', img: 'https://raw.githubusercontent.com/AMH012-hu/AlazharCityDelivery/main/AlazharCityDelivery/Screenshot%20from%202026-04-11%2007-58-39.png' }
 ];
 
 let cart = [];
 let savedSpecialRequest = "";
+
+function renderProducts(filter = 'all') {
+    const grid = document.getElementById('mainGrid');
+    grid.innerHTML = "";
+    const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
+    filtered.forEach(p => {
+        grid.innerHTML += `<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/100'"><h4>${p.name}</h4><div><div class="price">${p.price} ج.م</div><button class="btn-add" onclick="addToCart(${p.id})">أضف للسلة</button></div></div>`;
+    });
+}
 
 function addToCart(id) {
     cart.push(products.find(x => x.id === id));
@@ -123,13 +186,10 @@ function addToCart(id) {
 }
 
 function saveSpecialToCart() {
-    let text = document.getElementById('specialRequestText').value;
-    if(text.trim() !== "") {
-        savedSpecialRequest = text;
-        // SHOW THE NOTIFICATION BADGE
-        document.getElementById('specialBadge').style.display = 'block';
-        document.getElementById('specialBadge').innerText = "طلب خاص";
-        
+    savedSpecialRequest = document.getElementById('specialRequestText').value;
+    if(savedSpecialRequest.trim() !== "") {
+        // SHOW BADGE
+        document.getElementById('notifyBadge').style.display = 'block';
         closeAll();
         updateCartDisplay();
     }
@@ -139,28 +199,42 @@ function updateCartDisplay() {
     document.getElementById('cartBtnText').innerText = `(${cart.length})`;
     let listArea = document.getElementById('cartItemsList');
     listArea.innerHTML = "";
-    
     cart.forEach(item => {
         listArea.innerHTML += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee; font-size:0.85rem;"><span>${item.name}</span><span>${item.price} ج.م</span></div>`;
     });
-
     if(savedSpecialRequest) {
-        listArea.innerHTML += `<div class="special-item-line"><strong>طلب خارجي:</strong> ${savedSpecialRequest}</div>`;
+        listArea.innerHTML += `<div class="special-item-line"><strong>طلب خاص:</strong> ${savedSpecialRequest} <span style="float:left;">(السعر مكالمة)</span></div>`;
     }
+    let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+    document.getElementById('itemsTotal').innerText = subtotal;
+    document.getElementById('finalTotal').innerText = (subtotal > 0 || savedSpecialRequest) ? subtotal + 10 : 0;
 }
 
-// ... helper functions (toggle/close) ...
 function toggleCart() { document.getElementById('cartPanel').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
 function toggleSpecial() { document.getElementById('specialPanel').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
 function closeAll() { document.getElementById('cartPanel').classList.remove('active'); document.getElementById('specialPanel').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
+function filterCat(cat, btn) { document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); renderProducts(cat); }
 
-function renderProducts() {
-    const grid = document.getElementById('mainGrid');
-    grid.innerHTML = "";
-    products.forEach(p => {
-        grid.innerHTML += `<div class="card"><img src="${p.img}"><h4>${p.name}</h4><div class="price">${p.price} ج.م</div><button class="btn-add" onclick="addToCart(${p.id})">أضف للسلة</button></div>`;
-    });
+function showHelp() {
+    alert("كيف تطلب؟\n1. اختر المنتجات.\n2. طلبات خاصة؟ استخدم الزر بالأسفل.\n3. راجع السلة وارسل واتساب.");
 }
+
+function processOrder() {
+    let name = document.getElementById('clientName').value;
+    let loc = document.getElementById('clientLocation').value;
+    if(!name || !loc || (cart.length === 0 && !savedSpecialRequest)) { alert("برجاء إكمال البيانات"); return; }
+    
+    let itemsList = cart.map(i => `- ${i.name}`).join('%0A');
+    let subtotal = cart.reduce((sum, i) => sum + i.price, 0);
+    
+    let msg = `*طلب جديد*%0A👤 العميل: ${name}%0A📍 العنوان: ${loc}%0A%0A`;
+    if(cart.length > 0) msg += `🛒 *المنتجات:*%0A${itemsList}%0A%0A`;
+    if(savedSpecialRequest) msg += `📝 *طلبات خاصة:*%0A${savedSpecialRequest}%0A%0A`;
+    msg += `💰 *الإجمالي:* ${subtotal + 10} ج.م`;
+    
+    window.open(`https://wa.me/${myNum}?text=${msg}`);
+}
+
 renderProducts();
 </script>
 </body>
