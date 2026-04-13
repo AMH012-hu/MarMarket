@@ -21,85 +21,46 @@
         }
 
         header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            background: var(--main-black); 
-            color: white; 
-            padding: 10px 4%; 
-            border-bottom: 3px solid var(--main-red);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center; 
+            background: var(--main-black); color: white; padding: 10px 4%; 
+            border-bottom: 3px solid var(--main-red); position: sticky; top: 0; z-index: 1000;
         }
 
         .logo-container { display: flex; align-items: center; gap: 10px; }
-        
-        .logo { 
-            width: 45px; height: 45px; border-radius: 50%; background: white; 
-            padding: 2px; object-fit: cover; border: 1px solid var(--main-red);
-        }
-
+        .logo { width: 45px; height: 45px; border-radius: 50%; background: white; padding: 2px; object-fit: cover; border: 1px solid var(--main-red); }
         header h2 { margin: 0; font-size: 0.9rem; }
 
-        .cart-toggle-btn { 
-            background: var(--main-red); color: white; border: none; 
-            padding: 8px 12px; border-radius: 20px; font-weight: bold; cursor: pointer;
-        }
+        .cart-toggle-btn { background: var(--main-red); color: white; border: none; padding: 8px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; }
 
-        .category-bar {
-            display: flex; gap: 8px; padding: 12px 10px; background: rgba(255, 255, 255, 0.9);
-            overflow-x: auto; border-bottom: 1px solid #ddd; position: sticky; top: 68px; z-index: 999;
-        }
-
+        .category-bar { display: flex; gap: 8px; padding: 12px 10px; background: rgba(255, 255, 255, 0.9); overflow-x: auto; border-bottom: 1px solid #ddd; position: sticky; top: 68px; z-index: 999; }
         .cat-btn { background: #eee; padding: 6px 18px; border-radius: 15px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; cursor: pointer; border: none; }
         .cat-btn.active { background: var(--main-red); color: white; }
 
         #mainGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; }
-
-        .card { 
-            background: #ffffff; padding: 15px; border-radius: 15px; text-align: center; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column;
-            justify-content: space-between; height: 240px; 
-        }
-
+        .card { background: #ffffff; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; justify-content: space-between; height: 240px; }
         .card img { width: 100%; height: 80px; object-fit: contain; }
         .card h4 { margin: 5px 0; font-size: 0.85rem; height: 40px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .price { color: var(--main-red); font-weight: bold; margin-bottom: 8px; }
-
         .btn-add { background: var(--main-black); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* Cart Panel with Back Button */
-        #cartPanel { 
-            position: fixed; right: -100%; top: 0; width: 85%; max-width: 320px; 
-            height: 100%; background: #fff; transition: 0.3s; padding: 20px; z-index: 2000; 
-            box-shadow: -5px 0 15px rgba(0,0,0,0.1); 
-        }
+        #cartPanel { position: fixed; right: -100%; top: 0; width: 85%; max-width: 320px; height: 100%; background: #fff; transition: 0.3s; padding: 20px; z-index: 2000; box-shadow: -5px 0 15px rgba(0,0,0,0.1); overflow-y: auto; }
         #cartPanel.active { right: 0; }
-        
-        .cart-header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;
-        }
-
-        .back-btn { 
-            background: none; border: none; color: var(--main-red); font-size: 0.9rem; 
-            font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;
-        }
-
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+        .back-btn { background: none; border: none; color: var(--main-red); font-size: 0.9rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; }
         .cart-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; }
         .cart-overlay.active { display: block; }
 
+        .private-basket { background: #fff4f4; border: 1px solid var(--main-red); border-radius: 10px; padding: 10px; margin: 15px 0; }
+        .private-basket label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; color: var(--main-red); }
+        .private-basket textarea { width: 100%; border: none; background: transparent; font-family: inherit; resize: none; font-size: 0.9rem; outline: none; box-sizing: border-box; }
+
         .bill-details { background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 10px; border: 1px dashed #ccc; }
+        .bill-row { display: flex; justify-content: space-between; margin: 5px 0; font-size: 0.85rem; }
+        .total-row { border-top: 1px solid #ddd; padding-top: 8px; margin-top: 8px; font-weight: bold; color: var(--main-red); font-size: 1rem; }
+        
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
 
-        .help-btn {
-            position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px;
-            background: var(--main-black); color: white; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            cursor: pointer; z-index: 3000; border: 2px solid var(--main-red);
-        }
+        .help-btn { position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px; background: var(--main-black); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 3000; border: 2px solid var(--main-red); }
     </style>
 </head>
 <body>
@@ -122,37 +83,40 @@
 </div>
 
 <div id="mainGrid"></div>
-
 <div class="help-btn" onclick="showHelp()">؟</div>
-
 <div class="cart-overlay" id="overlay" onclick="toggleCart()"></div>
 
 <div id="cartPanel">
     <div class="cart-header">
-        <button class="back-btn" onclick="toggleCart()">
-            <i class="fas fa-arrow-right"></i> رجوع للمتجر
-        </button>
+        <button class="back-btn" onclick="toggleCart()"><i class="fas fa-arrow-right"></i> رجوع</button>
         <h3 style="margin: 0;">سلة الطلبات</h3>
     </div>
     
-    <div id="cartItems" style="max-height: 250px; overflow-y: auto;"></div>
+    <div id="cartItems"></div>
+
+    <div class="private-basket">
+        <label><i class="fas fa-pen"></i> طلبات خاصة (منتجات غير موجودة):</label>
+        <textarea id="specialRequest" rows="3" placeholder="اكتب هنا أي شيء آخر تحتاجه..."></textarea>
+    </div>
     
     <div class="bill-details">
-        <div style="display:flex; justify-content:space-between;">
+        <div class="bill-row">
             <span>ثمن المنتجات:</span>
             <span><span id="itemsTotal">0</span> ج.م</span>
         </div>
-        <div style="display:flex; justify-content:space-between; color: var(--main-red); font-weight: bold; margin-top: 5px;">
-            <span>الإجمالي:</span>
+        <div class="bill-row">
+            <span>خدمة التوصيل:</span>
+            <span>10 ج.م</span>
+        </div>
+        <div class="bill-row total-row">
+            <span>الإجمالي النهائي:</span>
             <span><span id="finalTotal">0</span> ج.م</span>
         </div>
     </div>
 
     <input type="text" id="clientName" placeholder="الاسم الكامل">
     <input type="text" id="clientLocation" placeholder="العنوان بالتفصيل">
-    <button onclick="processOrder()" style="width:100%; background:var(--main-red); color:white; border:none; padding:15px; border-radius:12px; font-weight:bold; margin-top:15px; cursor:pointer;">
-        تأكيد الطلب واتساب
-    </button>
+    <button onclick="processOrder()" style="width:100%; background:var(--main-red); color:white; border:none; padding:15px; border-radius:12px; font-weight:bold; margin-top:15px; cursor:pointer;">تأكيد الطلب واتساب</button>
 </div>
 
 <script>
@@ -170,17 +134,8 @@ function renderProducts(filter = 'all') {
     const grid = document.getElementById('mainGrid');
     grid.innerHTML = "";
     const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
-    
     filtered.forEach(p => {
-        grid.innerHTML += `
-            <div class="card">
-                <img src="${p.img}" onerror="this.src='https://via.placeholder.com/80'">
-                <h4>${p.name}</h4>
-                <div>
-                    <div class="price">${p.price} ج.م</div>
-                    <button class="btn-add" onclick="addToCart(${p.id})">أضف للسلة</button>
-                </div>
-            </div>`;
+        grid.innerHTML += `<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/80'"><h4>${p.name}</h4><div><div class="price">${p.price} ج.م</div><button class="btn-add" onclick="addToCart(${p.id})">أضف للسلة</button></div></div>`;
     });
 }
 
@@ -197,16 +152,11 @@ function addToCart(id) {
 }
 
 function updateCart() {
-    let itemsSubtotal = cart.reduce((sum, item) => sum + item.price, 0);
-    document.getElementById('itemsTotal').innerText = itemsSubtotal;
-    let finalTotal = itemsSubtotal > 0 ? (itemsSubtotal + 10) : 0;
-    document.getElementById('finalTotal').innerText = finalTotal;
-    
-    document.getElementById('cartItems').innerHTML = cart.map((i, index) => `
-        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee; font-size:0.8rem;">
-            <span>${i.name}</span>
-            <span>${i.price} ج.م</span>
-        </div>`).join('');
+    let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+    document.getElementById('itemsTotal').innerText = subtotal;
+    // Calculation includes 10 EGP delivery fee if cart isn't empty
+    document.getElementById('finalTotal').innerText = subtotal > 0 ? subtotal + 10 : 0;
+    document.getElementById('cartItems').innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee; font-size:0.8rem;"><span>${i.name}</span><span>${i.price} ج.م</span></div>`).join('');
 }
 
 function toggleCart() {
@@ -215,18 +165,24 @@ function toggleCart() {
 }
 
 function showHelp() {
-    alert("كيفية الطلب:\n1. اختر المنتجات التي تريدها.\n2. اضغط على السلة بالأعلى لمراجعة طلبك.\n3. إذا نسيت شيئاً، اضغط 'رجوع للمتجر'.\n4. ادخل بياناتك واضغط تأكيد الطلب.");
+    alert("كيفية الطلب:\n1. اختر المنتجات.\n2. إذا أردت شيئاً غير موجود، اكتبه في 'طلبات خاصة' داخل السلة.\n3. راجع التكلفة (المنتجات + 10 ج.م توصيل).\n4. ادخل بياناتك وارسل واتساب.");
 }
 
 function processOrder() {
     let name = document.getElementById('clientName').value;
     let loc = document.getElementById('clientLocation').value;
-    if(!name || !loc || cart.length === 0) { alert("بيانات ناقصة!"); return; }
+    let special = document.getElementById('specialRequest').value;
+    if(!name || !loc || (cart.length === 0 && !special)) { alert("برجاء إدخال البيانات والطلبات"); return; }
     
     let itemsList = cart.map(i => `- ${i.name}`).join('%0A');
-    let total = cart.reduce((sum, i) => sum + i.price, 0) + 10;
+    let subtotal = cart.reduce((sum, i) => sum + i.price, 0);
+    let total = subtotal + 10;
     
-    let msg = `*طلب جديد*%0A👤 العميل: ${name}%0A📍 العنوان: ${loc}%0A%0A🛒 الطلبات:%0A${itemsList}%0A%0A💰 الإجمالي: ${total} ج.م`;
+    let msg = `*طلب جديد*%0A👤 العميل: ${name}%0A📍 العنوان: ${loc}%0A%0A`;
+    if(cart.length > 0) msg += `🛒 *المنتجات:*%0A${itemsList}%0A%0A`;
+    if(special) msg += `📝 *طلبات خاصة:*%0A${special}%0A%0A`;
+    msg += `--------------------------%0A💰 *ثمن المنتجات:* ${subtotal} ج.م%0A🛵 *التوصيل:* 10 ج.م%0A✅ *الإجمالي:* ${total} ج.م`;
+    
     window.open(`https://wa.me/${myNum}?text=${msg}`);
 }
 
